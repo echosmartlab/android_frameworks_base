@@ -568,10 +568,15 @@ public class KeyguardViewMediator extends SystemUI {
         KeyguardUpdateMonitor.setCurrentUser(ActivityManager.getCurrentUser());
 
         // Assume keyguard is showing (unless it's disabled) until we know for sure...
-        setShowingLocked(!shouldWaitForProvisioning() && !mLockPatternUtils.isLockScreenDisabled(
-                KeyguardUpdateMonitor.getCurrentUser()));
-        updateInputRestrictedLocked();
-        mTrustManager.reportKeyguardShowingChanged();
+        boolean kiosk = SystemProperties.getBoolean("kiosk_mode", false);
+        if (kiosk) {
+            setShowingLocked(false);
+        } else {
+            setShowingLocked(!shouldWaitForProvisioning() && !mLockPatternUtils.isLockScreenDisabled(
+                        KeyguardUpdateMonitor.getCurrentUser()));
+            updateInputRestrictedLocked();
+            mTrustManager.reportKeyguardShowingChanged();
+        }
 
         mStatusBarKeyguardViewManager = new StatusBarKeyguardViewManager(mContext,
                 mViewMediatorCallback, mLockPatternUtils);

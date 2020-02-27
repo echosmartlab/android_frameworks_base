@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.UserHandle;
+import android.os.SystemProperties;
 import android.util.Log;
 import android.util.Slog;
 import android.view.View;
@@ -128,7 +129,9 @@ public class KeyguardServiceDelegate {
                 resources.getString(com.android.internal.R.string.config_keyguardComponent));
         intent.setComponent(keyguardComponent);
 
-        if (!context.bindServiceAsUser(intent, mKeyguardConnection,
+        boolean kiosk = SystemProperties.getBoolean("kiosk_mode", false);
+
+        if (kiosk || !context.bindServiceAsUser(intent, mKeyguardConnection,
                 Context.BIND_AUTO_CREATE, UserHandle.OWNER)) {
             Log.v(TAG, "*** Keyguard: can't bind to " + keyguardComponent);
             mKeyguardState.showing = false;
