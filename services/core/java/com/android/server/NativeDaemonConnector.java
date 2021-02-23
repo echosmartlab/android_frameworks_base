@@ -52,7 +52,7 @@ import java.util.LinkedList;
  * {@code libsysutils} FrameworkListener protocol.
  */
 final class NativeDaemonConnector implements Runnable, Handler.Callback, Watchdog.Monitor {
-    private final static boolean VDBG = false;
+    private final static boolean VDBG = true;
 
     private final String TAG;
 
@@ -60,7 +60,7 @@ final class NativeDaemonConnector implements Runnable, Handler.Callback, Watchdo
     private OutputStream mOutputStream;
     private LocalLog mLocalLog;
 
-    private volatile boolean mDebug = false;
+    private volatile boolean mDebug = true;
     private volatile Object mWarnIfHeld;
 
     private final ResponseQueue mResponseQueue;
@@ -75,7 +75,7 @@ final class NativeDaemonConnector implements Runnable, Handler.Callback, Watchdo
     private AtomicInteger mSequenceNumber;
 
     private static final long DEFAULT_TIMEOUT = 1 * 60 * 1000; /* 1 minute */
-    private static final long WARN_EXECUTE_DELAY_MS = 500; /* .5 sec */
+    private static final long WARN_EXECUTE_DELAY_MS = 1500; /* .5 sec */
 
     /** Lock held whenever communicating with native daemon. */
     private final Object mDaemonLock = new Object();

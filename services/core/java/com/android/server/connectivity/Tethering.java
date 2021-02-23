@@ -144,8 +144,8 @@ import java.util.Set;
 public class Tethering extends BaseNetworkObserver {
 
     private final static String TAG = Tethering.class.getSimpleName();
-    private final static boolean DBG = false;
-    private final static boolean VDBG = false;
+    private final static boolean DBG = true;
+    private final static boolean VDBG = true;
 
     protected static final String DISABLE_PROVISIONING_SYSPROP_KEY = "net.tethering.noprovisioning";
 

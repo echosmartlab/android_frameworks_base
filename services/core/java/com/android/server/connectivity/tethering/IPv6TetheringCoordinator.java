@@ -46,8 +46,8 @@ import java.util.Random;
  */
 public class IPv6TetheringCoordinator {
     private static final String TAG = IPv6TetheringCoordinator.class.getSimpleName();
-    private static final boolean DBG = false;
-    private static final boolean VDBG = false;
+    private static final boolean DBG = true;
+    private static final boolean VDBG = true;
 
     private static class Downstream {
         public final TetherInterfaceStateMachine tism;

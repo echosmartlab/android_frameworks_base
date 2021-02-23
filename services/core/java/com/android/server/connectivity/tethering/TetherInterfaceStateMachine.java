@@ -40,6 +40,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
 import android.os.ServiceSpecificException;
+import android.os.SystemClock;
 import android.util.Log;
 import android.util.Slog;
 import android.util.SparseArray;
@@ -74,8 +75,8 @@ public class TetherInterfaceStateMachine extends StateMachine {
     private static final int WIFI_HOST_IFACE_PREFIX_LENGTH = 24;
 
     private final static String TAG = "TetherInterfaceSM";
-    private final static boolean DBG = false;
-    private final static boolean VDBG = false;
+    private final static boolean DBG = true;
+    private final static boolean VDBG = true;
     private static final Class[] messageClasses = {
             TetherInterfaceStateMachine.class
     };
@@ -680,15 +681,20 @@ public class TetherInterfaceStateMachine extends StateMachine {
                     break;
                 case CMD_TETHER_CONNECTION_CHANGED:
                     final InterfaceSet newUpstreamIfaceSet = (InterfaceSet) message.obj;
-                    if (noChangeInUpstreamIfaceSet(newUpstreamIfaceSet)) {
-                        if (VDBG) Log.d(TAG, "Connection changed noop - dropping");
-                        break;
-                    }
+
+                    SystemClock.sleep(5000);
 
                     if (newUpstreamIfaceSet == null) {
+                        mLog.e("Connection changed null - dropping");
                         cleanupUpstream();
                         break;
                     }
+
+                    if (noChangeInUpstreamIfaceSet(newUpstreamIfaceSet)) {
+                        mLog.e("Connection changed noop - dropping");
+                        //break;
+                    }
+
 
                     for (String removed : upstreamInterfacesRemoved(newUpstreamIfaceSet)) {
                         cleanupUpstreamInterface(removed);
@@ -702,13 +708,14 @@ public class TetherInterfaceStateMachine extends StateMachine {
                     for (String ifname : added) {
                         try {
                             mNMService.enableNat(mIfaceName, ifname);
-                            mNMService.startInterfaceForwarding(mIfaceName, ifname);
                         } catch (Exception e) {
                             mLog.e("Exception enabling NAT: " + e);
-                            cleanupUpstream();
-                            mLastError = ConnectivityManager.TETHER_ERROR_ENABLE_NAT_ERROR;
-                            transitionTo(mInitialState);
-                            return true;
+                        }
+
+                        try {
+                            mNMService.startInterfaceForwarding(mIfaceName, ifname);
+                        } catch (Exception e) {
+                            mLog.e("Exception starting interface forwarding: " + e);
                         }
                     }
                     break;
