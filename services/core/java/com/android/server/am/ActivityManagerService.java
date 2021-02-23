@@ -572,20 +572,20 @@ public class ActivityManagerService extends IActivityManager.Stub
 
     // Amount of time after a call to stopAppSwitches() during which we will
     // prevent further untrusted switches from happening.
-    static final long APP_SWITCH_DELAY_TIME = 5*1000;
+    static final long APP_SWITCH_DELAY_TIME = 15*1000;
 
     // How long we wait for a launched process to attach to the activity manager
     // before we decide it's never going to come up for real.
-    static final int PROC_START_TIMEOUT = 10*1000;
+    static final int PROC_START_TIMEOUT = 30*1000;
     // How long we wait for an attached process to publish its content providers
     // before we decide it must be hung.
-    static final int CONTENT_PROVIDER_PUBLISH_TIMEOUT = 10*1000;
+    static final int CONTENT_PROVIDER_PUBLISH_TIMEOUT = 60*1000;
 
     /**
      * How long we wait for an provider to be published. Should be longer than
      * {@link #CONTENT_PROVIDER_PUBLISH_TIMEOUT}.
      */
-    static final int CONTENT_PROVIDER_WAIT_TIMEOUT = 20 * 1000;
+    static final int CONTENT_PROVIDER_WAIT_TIMEOUT = 60 * 1000;
 
     // How long we wait for a launched process to attach to the activity manager
     // before we decide it's never going to come up for real, when the process was
@@ -594,11 +594,11 @@ public class ActivityManagerService extends IActivityManager.Stub
     static final int PROC_START_TIMEOUT_WITH_WRAPPER = 1200*1000;
 
     // How long we allow a receiver to run before giving up on it.
-    static final int BROADCAST_FG_TIMEOUT = 10*1000;
-    static final int BROADCAST_BG_TIMEOUT = 60*1000;
+    static final int BROADCAST_FG_TIMEOUT = 60*1000;
+    static final int BROADCAST_BG_TIMEOUT = 120*1000;
 
     // How long we wait until we timeout on key dispatching.
-    static final int KEY_DISPATCHING_TIMEOUT = 5*1000;
+    static final int KEY_DISPATCHING_TIMEOUT = 15*1000;
 
     // How long we wait until we timeout on key dispatching during instrumentation.
     static final int INSTRUMENTATION_KEY_DISPATCHING_TIMEOUT = 60*1000;
